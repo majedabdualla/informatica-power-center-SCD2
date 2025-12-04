@@ -22,13 +22,31 @@ When a change occurs:
 2. A **new record is inserted** with updated values
 3. The new record becomes the **current active version** (`Is_Current = 1`, `Start_Date = current date`)
 
-**Typical SCD2 Columns:**
-- Surrogate Key  
-- Natural Key  
-- Attribute columns  
-- Start_Date  
-- End_Date  
-- Is_Current
+## ⚙️ Implementation Steps
+
+### 1️⃣ Extract
+Data is extracted from the source file and loaded into a staging area.
+
+### 2️⃣ Compare
+A **Lookup transformation** compares source records with the target dimension table to determine if:
+- The record is **new**
+- The record **exists but has changed**
+- The record **exists with no changes**
+
+### 3️⃣ Apply SCD2 Logic
+Using **Router** + **Update Strategy**:
+- **New record → INSERT**
+- **Changed record → Close old record + INSERT new version**
+- **Unchanged record → REJECT**
+
+### 4️⃣ Load
+Records are loaded into the target dimension table with proper versioning fields.
+
+##  Technologies Used
+- Informatica PowerCenter  
+- SQL  
+-  SQL Server  
+  
 
  ## 🖼️ Project Screenshots
 
